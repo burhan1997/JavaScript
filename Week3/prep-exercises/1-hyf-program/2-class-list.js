@@ -12,10 +12,33 @@ import { modules, students, mentors, classes } from "./hyf.js";
  *  [{ name: 'John', role: 'student' }, { name: 'Mary', role: 'mentor' }]
  */
 const getPeopleOfClass = (className) => {
-  // TODO complete this function
+
+  // Find the class with the specified name
+  const currentClass = classes.find((classInfo) => classInfo.name === className);
+
+  // Check if the class exists
+  if (!currentClass) {
+    return 'Class not found';
+  }
+
+  // Get students in the class
+  const studentsInClass = students
+    .filter((student) => student.class === className)
+    .map((student) => ({ name: student.name, role: 'student' }));
+
+  // Get mentors in the class
+  const mentorsInClass = mentors
+    .filter(
+      (mentor) =>
+        mentor.nowTeaching === className ||
+        (mentor.nowTeaching  === currentClass.currentModule)
+    )
+    .map((mentor) => ({ name: mentor.name, role: 'mentor' }));
+
+  // Combine and return the array of names and roles
+  return [...studentsInClass, ...mentorsInClass];
 };
-// You can uncomment out this line to try your function
-// console.log(getPeopleOfClass('class34'));
+console.log(getPeopleOfClass('class34'));
 
 /**
  * We would like to have a complete overview of the current active classes.
@@ -30,7 +53,34 @@ const getPeopleOfClass = (className) => {
  *  }
  */
 const getActiveClasses = () => {
-  // TODO complete this function
+  const activeClasses = classes.filter((cls) => cls.active);
+
+  const result = {};
+
+  activeClasses.forEach((classInfo) => {
+    const { name: className, currentModule } = classInfo;
+    const peopleInClass = [];
+
+    // Add students in the class
+    students.forEach((student) => {
+      if (student.class === className) {
+        peopleInClass.push({ name: student.name, role: 'student' });
+      }
+    });
+
+    // Add mentors in the class
+    mentors.forEach((mentor) => {
+      if (mentor.canTeach && mentor.canTeach.includes(currentModule)) {
+        peopleInClass.push({ name: mentor.name, role: 'mentor' });
+      }
+    });
+
+    // Add the array of people to the result object with the class name as the property
+    result[className] = peopleInClass;
+  });
+
+  return result;
 };
-// You can uncomment out this line to try your function
-// console.log(getActiveClasses());
+
+
+console.log(getActiveClasses());
