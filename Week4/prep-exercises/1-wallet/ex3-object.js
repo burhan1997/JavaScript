@@ -1,9 +1,10 @@
-import eurosFormatter from './euroFormatter.js';
+iimport eurosFormatter from './euroFormatter.js';
 
 function createWallet(name, cash = 0) {
   return {
     _name: name,
     _cash: cash,
+    _dailyAllowance: 40,
 
     deposit: function (amount) {
       this._cash += amount;
@@ -15,8 +16,20 @@ function createWallet(name, cash = 0) {
         return 0;
       }
 
+      if (amount > this._dailyAllowance) {
+        console.log(`Insufficient allowance!`);
+        return 0;
+      }
+
       this._cash -= amount;
       return amount;
+    },
+
+    setDailyAllowance: function (newAllowance) {
+      this._dailyAllowance = newAllowance;
+      console.log(
+        `Daily allowance set to: ${eurosFormatter.format(newAllowance)}`
+      );
     },
 
     transferInto: function (wallet, amount) {
@@ -46,6 +59,8 @@ function main() {
   const walletJoe = createWallet('Joe', 10);
   const walletJane = createWallet('Jane', 20);
 
+  walletJack.transferInto(walletJoe, 50);
+  walletJack.setDailyAllowance(80);
   walletJack.transferInto(walletJoe, 50);
   walletJane.transferInto(walletJoe, 25);
 

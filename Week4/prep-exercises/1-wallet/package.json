@@ -1,0 +1,12 @@
+{
+  "name": "1-wallet",
+  "version": "1.0.0",
+  "description": "> Created by the one and only Jim, you can find him on our [Slack](https://hackyourfuture.slack.com/team/U383PTTK9) and on [GitHub](https://github.com/remarcmij)!",
+  "main": "euroFormatter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
