@@ -1,4 +1,4 @@
-iimport eurosFormatter from './euroFormatter.js';
+import eurosFormatter from './euroFormatter.js';
 
 function createWallet(name, cash = 0) {
   return {
